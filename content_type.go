@@ -28,6 +28,7 @@ const (
 	FieldTypeBoolean  = "Boolean"
 	FieldTypeDate     = "Date"
 	FieldTypeObject   = "Object"
+	FieldTypeSymbol	  = "Symbol"
 )
 
 // Field model
