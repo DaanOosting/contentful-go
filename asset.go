@@ -45,6 +45,7 @@ type Asset struct {
 	Fields *FileFields `json:"fields"`
 }
 
+
 // MarshalJSON for custom json marshaling
 func (asset *Asset) MarshalJSON() ([]byte, error) {
 	payload := map[string]interface{}{
@@ -75,53 +76,53 @@ func (asset *Asset) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON for custom json unmarshaling
-func (asset *Asset) UnmarshalJSON(data []byte) error {
-	var payload map[string]interface{}
-	if err := json.Unmarshal(data, &payload); err != nil {
-		return err
-	}
-
-	fileName := payload["fields"].(map[string]interface{})["file"].(map[string]interface{})["fileName"]
-	localized := true
-
-	if fileName == nil {
-		localized = false
-	}
-
-	if localized == false {
-		asset.Sys = &Sys{}
-		if err := json.Unmarshal([]byte(payload["sys"].(string)), asset.Sys); err != nil {
-			return err
-		}
-
-		title := payload["fields"].(map[string]interface{})["title"]
-		if title != nil {
-			title = title.(map[string]interface{})[asset.locale]
-		}
-
-		description := payload["fields"].(map[string]interface{})["description"]
-		if description != nil {
-			description = description.(map[string]interface{})[asset.locale]
-		}
-
-		asset.Fields = &FileFields{
-			Title:       title.(string),
-			Description: description.(string),
-			File:        &File{},
-		}
-
-		file := payload["fields"].(map[string]interface{})["file"].(map[string]interface{})[asset.locale]
-		if err := json.Unmarshal([]byte(file.(string)), asset.Fields.File); err != nil {
-			return err
-		}
-	} else {
-		if err := json.Unmarshal(data, asset); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
+//func (asset *Asset) UnmarshalJSON(data []byte) error {
+//	var payload map[string]interface{}
+//	if err := json.Unmarshal(data, &payload); err != nil {
+//		return err
+//	}
+//
+//	fileName := payload["fields"].(map[string]interface{})["file"].(map[string]interface{})["fileName"]
+//	localized := true
+//
+//	if fileName == nil {
+//		localized = false
+//	}
+//
+//	if localized == false {
+//		asset.Sys = &Sys{}
+//		if err := json.Unmarshal([]byte(payload["sys"].(string)), asset.Sys); err != nil {
+//			return err
+//		}
+//
+//		title := payload["fields"].(map[string]interface{})["title"]
+//		if title != nil {
+//			title = title.(map[string]interface{})[asset.locale]
+//		}
+//
+//		description := payload["fields"].(map[string]interface{})["description"]
+//		if description != nil {
+//			description = description.(map[string]interface{})[asset.locale]
+//		}
+//
+//		asset.Fields = &FileFields{
+//			Title:       title.(string),
+//			Description: description.(string),
+//			File:        &File{},
+//		}
+//
+//		file := payload["fields"].(map[string]interface{})["file"].(map[string]interface{})[asset.locale]
+//		if err := json.Unmarshal([]byte(file.(string)), asset.Fields.File); err != nil {
+//			return err
+//		}
+//	} else {
+//		if err := json.Unmarshal(data, asset); err != nil {
+//			return err
+//		}
+//	}
+//
+//	return nil
+//}
 
 // GetVersion returns entity version
 func (asset *Asset) GetVersion() int {
