@@ -14,14 +14,15 @@ type CollectionOptions struct {
 // Collection model
 type Collection struct {
 	Query
-	c     *Contentful
-	req   *http.Request
-	page  uint16
-	Sys   *Sys          `json:"sys"`
-	Total int           `json:"total"`
-	Skip  int           `json:"skip"`
-	Limit int           `json:"limit"`
-	Items []interface{} `json:"items"`
+	c     		*Contentful
+	req   		*http.Request
+	page  		uint16
+	Sys   		*Sys          	`json:"sys"`
+	Total 		int           	`json:"total"`
+	Skip  		int           	`json:"skip"`
+	Limit 		int           	`json:"limit"`
+	Items 		[]interface{} 	`json:"items"`
+	Includes 	*Includes		`json:"includes,omitempty"`
 }
 
 // NewCollection initilazies a new collection
@@ -59,6 +60,16 @@ func (col *Collection) Next() (*Collection, error) {
 	return col, nil
 }
 
+// ToEntry cast Items to Entry model
+func (col *Collection) ToEntry() []*Entry {
+	var entries []*Entry
+
+	byteArray, _ := json.Marshal(col.Items)
+	json.NewDecoder(bytes.NewReader(byteArray)).Decode(&entries)
+
+	return entries
+}
+
 // ToContentType cast Items to ContentType model
 func (col *Collection) ToContentType() []*ContentType {
 	var contentTypes []*ContentType
@@ -69,7 +80,7 @@ func (col *Collection) ToContentType() []*ContentType {
 	return contentTypes
 }
 
-// ToSpace cast Items to ContentType model
+// ToSpace cast Items to Space model
 func (col *Collection) ToSpace() []*Space {
 	var spaces []*Space
 

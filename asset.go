@@ -75,7 +75,8 @@ func (asset *Asset) MarshalJSON() ([]byte, error) {
 	return json.Marshal(payload)
 }
 
-// UnmarshalJSON for custom json unmarshaling
+
+//UnmarshalJSON for custom json unmarshaling
 //func (asset *Asset) UnmarshalJSON(data []byte) error {
 //	var payload map[string]interface{}
 //	if err := json.Unmarshal(data, &payload); err != nil {
